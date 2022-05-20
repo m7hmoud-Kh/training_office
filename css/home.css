@@ -1,0 +1,40 @@
+html{
+    background: url(../img/img4.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
+html,body{
+    margin: 0;
+    padding: 0;
+
+}
+nav ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background: #444;
+}
+nav ul li{
+    display: inline-block;
+    font-size: 1.1em;
+    padding: 12px;
+}
+nav a{
+    text-decoration: none;
+    color: #fff;
+    padding: 12px;
+
+}
+nav a:hover{
+    background: #18BC9C;
+    color: #fff;
+}
+#content{
+    margin-top: 200px;
+    width: 100;
+    text-align: center;
+}
+#content h1{
+    font-size: 80px;
+    font-weight: normal;
+    margin-bottom: -20px;
+}

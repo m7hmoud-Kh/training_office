@@ -1,0 +1,45 @@
+body{
+    font-family: sans-serif;
+    background: url(../img/img4.jpg);
+    background-size: cover;
+}
+.form{
+    font-style: normal;
+    top: 50%;
+    left: 50%;
+    width: 350px;
+    max-width: 300px;
+    background: rgba(0,0 green,0 blue,.5 alpha);
+    border-radius: 15px;
+    box-sizing: border-box;
+    padding: 25px;
+    margin: auto;
+    margin-top: 50px;
+    border-style: ridge;
+}
+.form button{
+    width: 100%;
+    margin-top: 35px;
+    height: 40px;
+    font-size: 18px;
+    background: rgba(0,0 green,0 blue,.5 alpha);
+    border-radius: 15px;
+    opacity: 0.8;
+}
+.input1{
+
+    width: 100%;
+    margin-top: 15px;
+    height: 40px;
+    font-size: 20px;
+    opacity: 0.8;
+    text-align: center;
+}
+.form h1{
+
+    text-align: center;
+    color:#000;
+    font-size:30px;
+
+
+}
