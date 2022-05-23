@@ -12,7 +12,7 @@
         <li><a href="coordination.php">التنسيق</a></li>
         <li>
           <a
-            href="file:///D:/%D9%85%D8%B4%D8%B1%D9%88%D8%B9%20%D8%A7%D9%84%D8%AA%D8%AE%D8%B1%D8%AC/search.html?%D8%A7%D8%AF%D8%AE%D9%84+%D8%A7%D9%84%D8%B1%D9%82%D9%85+%D8%A7%D9%84%D9%82%D9%88%D9%85%D9%8A="
+            href="search.php"
             >نتيجة التنسيق</a
           >
         </li>

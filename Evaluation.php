@@ -82,10 +82,28 @@ $all_branches = $stmt->fetchAll();
 <head>
   <meta charset="UTF-8" />
   <link href="css/Evaluation.css" rel="stylesheet" />
+  <link href="css/home.css" rel="stylesheet" />
+
   <title>Evaluation</title>
 </head>
 
 <body dir="rtl">
+
+
+  <nav dir="ltr">
+    <ul>
+      <li><a href="home.php">الصفحة الرائسية</a></li>
+      <li>
+        <a href="school.php">اضافه مدراس</a>
+      </li>
+      <li>
+        <a href="logout.php">خروج</a>
+      </li>
+    </ul>
+  </nav>
+
+
+
   <div id="mother">
     <form name="Evaluation" class="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
       <aside>
@@ -111,8 +129,8 @@ $all_branches = $stmt->fetchAll();
             <?php
               foreach($all_branches as $branch){
                 ?>
-                <option value="<?=$branch['id']?>"><?=$branch['name']?></option>
-                <?php
+            <option value="<?=$branch['id']?>"><?=$branch['name']?></option>
+            <?php
               }
             ?>
           </select>
@@ -130,13 +148,13 @@ $all_branches = $stmt->fetchAll();
 
           <label>الفرقة </label><br />
           <select name="level">
-            <option value="3" >3</option>
+            <option value="3">3</option>
             <option value="4">4</option>
           </select>
           <br>
           <label>النوع </label><br />
           <select name="gender">
-            <option value="0"  selected>ذكر</option>
+            <option value="0" selected>ذكر</option>
             <option value="1">انثي</option>
           </select>
           <br>

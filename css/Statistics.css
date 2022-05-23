@@ -1,0 +1,24 @@
+body{
+    font-family: sans-serif;
+    background: url(../img/img4.jpg);
+    background-size: 100% 100%;
+    background-attachment: fixed;
+}
+main{
+    float: right;
+    border: 1px solid gray;
+    padding: 5px;
+    opacity: 0.8;
+}
+#tbl{
+    width: 900px;
+    font-size: 20px;
+
+}
+#tbl th{
+    background-color: silver;
+    color: black;
+    font-size: 20px;
+    padding:10px;
+
+}

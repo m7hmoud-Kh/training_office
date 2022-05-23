@@ -45,6 +45,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <body>
     <form name="coordination" class="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
       <h1>التنسيق</h1>
+
+      <?php
+          if(isset($arr_error)){
+          foreach($arr_error as $err){
+            ?>
+          <small style="color: red;"><?=$err ?></small> <br>
+          <?php
+          }
+        }
+          ?>
+
       <label class="label">الرقم القومي</label>
       <input
         type="text"

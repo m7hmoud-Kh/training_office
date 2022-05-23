@@ -7,3 +7,14 @@ function validate_empty_input($input){
     }
 
 }
+
+
+function get_gender($gender){
+    if($gender == 1){
+        return 'انثي';
+    }elseif($gender != null){
+        return  'ذكر';
+    }else{
+        return 'مشتركه';
+    }
+}
