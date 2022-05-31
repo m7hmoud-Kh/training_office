@@ -53,10 +53,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
   <meta charset="UTF-8" />
   <link href="css/search.css" rel="stylesheet" />
+  <link href="css/header.css" rel="stylesheet" />
+
   <title>Search</title>
 </head>
 
 <body>
+<?php
+  require 'header.php';
+  ?>
   <form class="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
     <h1>نتيجة التنسيق</h1>
     <?php

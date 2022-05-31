@@ -1,0 +1,43 @@
+body{
+    font-family: sans-serif;
+    background: url(../img/img4.jpg);
+    background-size: 100% 100%;
+    background-attachment: fixed;
+}
+#mother{
+    width: 100%;
+    font-size: 20px;
+}
+#content{
+    margin-top: 60px;
+    width: 50;
+    text-align: center;
+}
+#content h1{
+    font-size: 50px;
+    font-weight: normal;
+
+}
+.form{
+    font-style: normal;
+    opacity: 0.8;
+    width: 500px;
+    left: 500px;
+    text-align:center;
+    border: 1px solid black;
+    box-sizing: border-box;
+    padding: 25px;
+    margin: auto;
+    margin-top: 50px;
+    border-style: ridge;
+    font-size: 30px;
+    background-color: silver;
+}
+input{
+    width: 100%;
+    margin-top: 15px;
+    height: 40px;
+    font-size: 20px;
+    opacity: 0.8;
+    text-align: center;
+}

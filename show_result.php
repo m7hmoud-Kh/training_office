@@ -45,10 +45,15 @@ $gender = get_gender($student['gender']);
     <head>
         <meta charset="UTF-8" />
         <link href="css/coordination.css" rel="stylesheet" />
+        <link href="css/header.css" rel="stylesheet" />
+
         <title>Coordination</title>
     </head>
 
     <body>
+    <?php
+  require 'header.php';
+  ?>
         <form name="coordination" class="form">
             <h1>نتيجه التنسيق</h1>
             <h3>الاسم : <?= $student['name']?></h3>

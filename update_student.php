@@ -87,10 +87,15 @@ $all_specializations = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8" />
     <link href="css/Evaluation.css" rel="stylesheet" />
+    <link href="css/header.css" rel="stylesheet" />
+
     <title>Evaluation</title>
 </head>
 
 <body dir="rtl">
+<?php
+  require 'header_admin.php';
+  ?>
     <div id="mother">
         <form name="Evaluation" class="form" action="<?= $_SERVER["PHP_SELF"] ?>?id=<?=$_GET['id']?>" method="POST">
             <aside>

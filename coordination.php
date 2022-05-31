@@ -40,9 +40,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <head>
     <meta charset="UTF-8" />
     <link href="css/coordination.css" rel="stylesheet" />
+    <link href="css/header.css" rel="stylesheet" />
+
     <title>Coordination</title>
   </head>
   <body>
+  <?php
+  require 'header.php';
+  ?>
     <form name="coordination" class="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
       <h1>التنسيق</h1>
 

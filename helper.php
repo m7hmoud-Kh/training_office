@@ -1,5 +1,7 @@
 <?php
 
+require 'db.php';
+
 function validate_empty_input($input){
 
     if(empty($input)){
@@ -17,4 +19,29 @@ function get_gender($gender){
     }else{
         return 'مشتركه';
     }
+}
+
+function insert_poll_one_section($section,$std_id,$school_id,$section_id){
+
+    global $con;
+    foreach($section as $key => $val){
+        $stmt = $con->prepare("INSERT INTO polls (`student_id`,school_id,section_id,answer) VALUES(?,?,?,?)");
+        $stmt->execute(array($std_id,$school_id,$section_id,$val));
+    }
+    return True;
+}
+
+
+function get_all_answer_per_section($section_id,$school_id){
+    global $con;
+    $stmt = $con->prepare('SELECT SUM(answer) AS sum_per_section , COUNT(DISTINCT(student_id)) AS count_student FROM polls JOIN schools ON polls.school_id = schools.id WHERE section_id = ? AND school_id = ? GROUP BY school_id; ');
+    $stmt->execute(array($section_id,$school_id));
+    $result = $stmt->fetch();
+    $percent = make_percent_by_section($result['sum_per_section'],$result['count_student']);
+
+    return array($result['count_student'] , $percent);
+}
+
+function make_percent_by_section($sum_per_section,$count_student){
+    return  number_format(($sum_per_section / ($count_student * 45)) * 100,2) . '%' ;
 }

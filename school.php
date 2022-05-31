@@ -59,10 +59,15 @@ $all_schools = $stmt->fetchAll();
 <head>
   <meta charset="UTF-8" />
   <link href="css/Schools.css" rel="stylesheet" />
+  <link href="css/header.css" rel="stylesheet" />
+
   <title>Schools</title>
 </head>
 
 <body dir="rtl">
+  <?php
+  require 'header_admin.php';
+  ?>
   <div id="mother">
     <div id="content">
       <h1>أضافة مدرسة</h1>

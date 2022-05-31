@@ -82,7 +82,7 @@ $all_branches = $stmt->fetchAll();
 <head>
   <meta charset="UTF-8" />
   <link href="css/Evaluation.css" rel="stylesheet" />
-  <link href="css/home.css" rel="stylesheet" />
+  <link href="css/header.css" rel="stylesheet" />
 
   <title>Evaluation</title>
 </head>
@@ -90,17 +90,9 @@ $all_branches = $stmt->fetchAll();
 <body dir="rtl">
 
 
-  <nav dir="ltr">
-    <ul>
-      <li><a href="home.php">الصفحة الرائسية</a></li>
-      <li>
-        <a href="school.php">اضافه مدراس</a>
-      </li>
-      <li>
-        <a href="logout.php">خروج</a>
-      </li>
-    </ul>
-  </nav>
+<?php
+require 'header_admin.php';
+?>
 
 
 
