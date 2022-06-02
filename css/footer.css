@@ -1,0 +1,38 @@
+footer{
+    background-color: #444;
+    color: white;
+    padding: 20px;
+    direction: rtl;
+
+}
+.doc_desc{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+}
+.head img
+{
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+
+footer > h3{
+    margin-top: 2%;
+}
+
+.made_with {
+    text-align: center;
+}
+footer > p {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 1%;
+    font-size: 18px;
+}
+.made_with li{
+    display: inline;
+    margin-right: 1%;
+    font-size: large;
+}

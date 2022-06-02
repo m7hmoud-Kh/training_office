@@ -1,20 +1,19 @@
-html{
-    background: url(../img/img4.jpg) no-repeat center center fixed;
-    background-size: cover;
-}
-html,body{
+*{
     margin: 0;
     padding: 0;
 
 }
-
 #content{
-    margin-top: 200px;
-    width: 100;
     text-align: center;
+    background: url(../img/img4.jpg) no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+
 }
 #content h1{
     font-size: 80px;
     font-weight: normal;
-    margin-bottom: -20px;
+    margin:  auto;
+    width: 50%;
+    padding-top: 15%;
 }
