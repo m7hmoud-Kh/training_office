@@ -80,3 +80,10 @@ function add_school($name,$special_id,$gender){
     $stmt->execute(array($name,$special_id,$gender));
     return $stmt->rowCount();
 }
+
+function delete_school_by_id($id){
+    global $con;
+    $stmt = $con->prepare("DELETE FROM schools Where id = ?");
+    $stmt->execute(array($id));
+    return $stmt->rowCount();
+}

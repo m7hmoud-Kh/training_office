@@ -1,6 +1,7 @@
 <?php
 
-require 'db.php';
+require './models/Model_student.php';
+require './static_message.php';
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
@@ -9,23 +10,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   $nat_id = $_POST['nat_id'];
 
   if(empty($nat_id)){
-    $arr_error['nat_id'] = "National ID Must be Added";
+    $arr_error['nat_id'] = $student['empty_nat_id'];
   }else{
     if(strlen($nat_id) != 14){
-      $arr_error['nat_id'] = "National ID Must be 14 Numbers";
+      $arr_error['nat_id'] = $student['not_14_nat_id'];
     }
   }
 
   if(empty($arr_error)){
-
-    $stmt = $con->prepare('SELECT national_id ,id From students where national_id = ? ');
-    $stmt->execute(array($nat_id));
-    $result = $stmt->fetch();
+    $result = get_student_by_nat_id($nat_id);
     if($result){
       $id =  $result['id'];
       header("location:selected_school_coor.php?id=$id");
     }
-
   }
 
 

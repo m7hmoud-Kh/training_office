@@ -2,6 +2,9 @@
 session_start();
 if(isset($_SESSION['user_name'])){
 require 'db.php';
+require './static_message.php';
+require './models/Model_student.php';
+require './models/Model_branch.php';
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -19,45 +22,41 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   $numlength = strlen((string)$nat_id);
 
   if(empty($name)){
-    $arr_error['name'] = "Name must be not Empty";
+    $arr_error['name'] = $student['empty_name'];
   }
   if(empty($nat_id)){
-    $arr_error['nat_id'] = "National ID must be Not Empty";
+    $arr_error['nat_id'] = $student['empty_nat_id'];
 
   }
 
   if($branch_id == 0){
-    $arr_error['branch_id'] = "Must be Select Branch";
+    $arr_error['branch_id'] = $student['empty_branch'];
   }
 
   if($speical_id == 0){
-    $arr_error['speical_id'] = "Must be Select Branch";
+    $arr_error['speical_id'] = $student['empty_speical'];
   }
 
   if(empty($level)){
-    $arr_error['level'] = "Level Must Be not Empty";
+    $arr_error['level'] = $student['empty_level'];
   }
 
   if(empty($arr_error)){
 
 
     if($numlength != 14){
-      $arr_error['nat_id'] = "National ID Must be 14 numbers";
+      $arr_error['nat_id'] = $student['not_14_nat_id'];
       $defalut = $_POST;
 
     }
 
     if(empty($arr_error)){
-    $stmt =$con->prepare("SELECT * From students Where national_id = ?");
-    $stmt->execute(array($nat_id));
-    $result = $stmt->rowCount();
+    $result = get_student_by_nat_id($nat_id,true);
     if($result){
-      $arr_error['error_in_add'] = "National Id is already Exist";
+      $arr_error['error_in_add'] = $student['dulicate_nat_id'];
       $defalut = $_POST;
     }else{
-
-      $stmt = $con->prepare("INSERT INTO students (`national_id`, `name`, `branch_id`,speical_id, `level`,gender) Values(?,?,?,?,?,?)");
-      $stmt->execute(array($nat_id,$name,$branch_id,$speical_id,$level,$gender));
+      add_student($nat_id,$name,$branch_id,$speical_id,$level,$gender);
     }
 
     }
@@ -67,13 +66,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   }
 
 }
-$stmt =$con->prepare("SELECT * From students");
-$stmt->execute();
-$result = $stmt->fetchAll();
 
-$stmt = $con->prepare("SELECT * FROM branchs");
-$stmt->execute();
-$all_branches = $stmt->fetchAll();
+$result  = get_all_student();
+$all_branches = get_all_branch();
 ?>
 
 <!DOCTYPE html>

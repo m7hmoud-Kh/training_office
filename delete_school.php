@@ -1,10 +1,7 @@
 <?php
-require 'db.php';
+require './models/Model_school.php';
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
-
-    $stmt = $con->prepare("DELETE FROM schools Where id = ?");
-    $stmt->execute(array($_GET['id']));
-    $result = $stmt->rowCount();
+    $result = delete_school_by_id($_GET['id']);
     if($result){
         header("location:school.php");
     }

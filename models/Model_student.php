@@ -62,3 +62,23 @@ function get_student_by_nat_id($nat_id,$count = false){
     $stmt->execute(array($nat_id));
     return $count ? $stmt->rowCount() : $stmt->fetch();
 }
+
+function get_all_student(){
+    global $con;
+    $stmt =$con->prepare("SELECT * From students");
+    $stmt->execute();
+    return  $stmt->fetchAll();
+}
+
+function add_student($nat_id,$name,$branch_id,$speical_id,$level,$gender){
+    global $con;
+    $stmt = $con->prepare("INSERT INTO students (`national_id`, `name`, `branch_id`,speical_id, `level`,gender) Values(?,?,?,?,?,?)");
+    $stmt->execute(array($nat_id,$name,$branch_id,$speical_id,$level,$gender));
+}
+
+function delete_student_with_id($id){
+    global $con;
+    $stmt = $con->prepare("DELETE FROM students Where id = ?");
+    $stmt->execute(array($id));
+    return $stmt->rowCount();
+}

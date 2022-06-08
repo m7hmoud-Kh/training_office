@@ -1,6 +1,8 @@
 <?php
 session_start();
 require "db.php";
+require './static_message.php';
+require './models/Model_admin.php';
 
 
 
@@ -13,24 +15,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
   if(empty($email)){
-    $arr_error['email'] = "Email must be not Emoty";
+    $arr_error['email'] = $admin['empty_email'];
   }
   if(empty($password)){
-    $arr_error['password'] = "Password must be not Empty";
+    $arr_error['password'] = $admin['empty_password'];
   }
 
 
   if(empty($arr_error)){
-    $stmt = $con->prepare("SELECT * FROM admins Where email = ? And `password` = ?");
-    $stmt->execute(array($email,$password));
-    $result = $stmt->fetch();
+    $result = get_admin_by_email_and_password($email,$password);
     if($result){
       $_SESSION['id'] = $result['id'];
       $_SESSION['user_name'] = $result['user_name'];
       $_SESSION['email'] = $result['email'];
       header('location:Evaluation.php');
     }else{
-      $arr_error['error_in_login'] = "Email Or password is Not Correct";
+      $arr_error['error_in_login'] = $admin['error_in_login'];
     }
   }
 

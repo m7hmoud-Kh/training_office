@@ -1,10 +1,7 @@
 <?php
-require 'db.php';
+require './models/Model_student.php';
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
-
-    $stmt = $con->prepare("DELETE FROM students Where id = ?");
-    $stmt->execute(array($_GET['id']));
-    $result = $stmt->rowCount();
+    $result = delete_student_with_id($_GET['id']);
     if($result){
         header("location:Evaluation.php");
     }
