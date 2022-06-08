@@ -3,6 +3,10 @@ session_start();
 if(isset($_SESSION['user_name'])){
 require 'db.php';
 require 'helper.php';
+require './static_message.php';
+require './models/Model_school.php';
+require './models/Model_specializations.php';
+
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -14,12 +18,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
   if(empty($name)){
-    $arr_error['name'] = "Name must be not Empty";
+    $arr_error['name'] = $school['empty_name'];
   }
 
 
   if($special_id == 0){
-    $arr_error['special_id'] = "Must be Select Branch";
+    $arr_error['special_id'] = $school['empty_speical'];
   }
 
   if($gender == 2){
@@ -28,17 +32,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   if(empty($arr_error)){
 
-
-    $stmt = $con->prepare("SELECT * From schools where name != ?");
-    $stmt->execute(array($name));
-    $found_or_not = $stmt->rowCount();
+    $found_or_not = exist_school_or_not($name);
     if($found_or_not){
-
-      $stmt = $con->prepare("INSERT INTO schools (`name`,speical_id,gender) VALUES(?,?,?)");
-      $stmt->execute(array($name,$special_id,$gender));
-      $result = $stmt->rowCount();
+      $result = add_school($name,$special_id,$gender);
     }else{
-      $arr_error['dublicated'] = 'School is already Exists';
+      $arr_error['dublicated'] = $school['duplicate_name'];
     }
 
   }
@@ -46,9 +44,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
 }
-$stmt = $con->prepare("SELECT * From schools");
-$stmt->execute();
-$all_schools = $stmt->fetchAll();
+$all_schools = get_all_school();
 
 
 ?>
@@ -111,9 +107,7 @@ $all_schools = $stmt->fetchAll();
           </tr>
           <?php
           foreach($all_schools as $school){
-            $stmt = $con->prepare("SELECT `name` From specializations where id = ? ");
-            $stmt->execute(array($school['speical_id']));
-            $speical = $stmt->fetch();
+            $speical = get_specializations_by_id($school['speical_id']);
 
             $gender = get_gender($school['gender'])
             ?>

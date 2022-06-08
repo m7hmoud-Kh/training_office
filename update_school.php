@@ -3,63 +3,49 @@ session_start();
 if(isset($_SESSION['user_name'])){
 require 'db.php';
 require 'helper.php';
+require './models/Model_school.php';
+require './static_message.php';
 
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
-    $stmt = $con->prepare("SELECT * FROM schools where id = ?");
-    $stmt->execute(array($_GET['id']));
-    $result =$stmt->fetch();
-
+    $result = get_school_by_id($_GET['id']);
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-$arr_error = array();
+    $arr_error = array();
 
-$name = htmlentities($_POST['name']);
-$gender = filter_var($_POST['gender'],FILTER_VALIDATE_INT);
-$special_id =  filter_var($_POST['special_id'],FILTER_VALIDATE_INT);
-
-
-if(empty($name)){
-$arr_error['name'] = "Name must be not Empty";
-}
+    $name = htmlentities($_POST['name']);
+    $gender = filter_var($_POST['gender'],FILTER_VALIDATE_INT);
+    $special_id =  filter_var($_POST['special_id'],FILTER_VALIDATE_INT);
 
 
-if($special_id == 0){
-$arr_error['special_id'] = "Must be Select Branch";
-}
-
-if($gender == 2){
-$gender = null;
-}
-
-if(empty($arr_error)){
-
-
-    $stmt = $con->prepare("SELECT * From schools where `name` = ? AND id != ?");
-    $stmt->execute(array($name,$_GET['id']));
-    $found_or_not = $stmt->rowCount();
-    if(!$found_or_not){
-
-        $stmt = $con->prepare("UPDATE schools set `name` = ? , speical_id = ? , gender = ?  Where id = ?");
-        $stmt->execute(array($name,$special_id,$gender,$_GET['id']));
-        $Updated = $stmt->rowCount();
-        if($Updated){
-            $success = "You Are Updated School Successfully";
-            header('Refresh: 3; URL=school.php');
-        }
-    }else{
-        $arr_error['dublicated'] = 'School is already Exists';
+    if(empty($name)){
+    $arr_error['name'] = $school['empty_name'];
     }
 
+    if($special_id == 0){
+    $arr_error['special_id'] = $school['empty_speical'];
+    }
+
+    if($gender == 2){
+    $gender = null;
+    }
+
+    if(empty($arr_error)){
+        $found_or_not = get_duplicate_name_school($name,$_GET['id']);
+        if(!$found_or_not){
+            $Updated = update_school($name,$special_id,$gender,$_GET['id']);
+            if($Updated){
+                $success = $school['success'];
+                header('Refresh: 3; URL=school.php');
+            }
+        }else{
+            $arr_error['dublicated'] = $school['duplicate_name'];
+        }
+    }
 }
 
-
-
-}
-$stmt = $con->prepare("SELECT * From schools");
-$stmt->execute();
-$all_schools = $stmt->fetchAll();
+$all_schools = get_all_school();
 
 
 ?>

@@ -1,66 +1,62 @@
 <?php
 session_start();
-require 'db.php';
+require './models/Model_student.php';
+require './models/Model_branch.php';
+require './models/Model_specializations.php';
+require 'static_message.php';
+
 if(isset($_SESSION['user_name'])){
 
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
-    $stmt = $con->prepare("SELECT * FROM students where id = ?");
-    $stmt->execute(array($_GET['id']));
-    $result =$stmt->fetch();
-
+$result =  get_student_by_id($_GET['id']);
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $arr_error = array();
     $defalut = array();
-
     $name = htmlentities($_POST['name']);
     $nat_id = filter_var($_POST['nat_id'],FILTER_VALIDATE_INT);
     $branch_id = htmlentities($_POST['branch_id']);
     $level = htmlentities($_POST['level']);
     $speical_id =  filter_var($_POST['speical_id'],FILTER_VALIDATE_INT);
 
-
-
     $numlength = strlen((string)$nat_id);
 
     if(empty($name)){
-        $arr_error['name'] = "Name must be not Empty";
+        $arr_error['name'] = $student['empty_name'];
     }
     if(empty($nat_id)){
-        $arr_error['nat_id'] = "National ID must be Not Empty";
+        $arr_error['nat_id'] = $student['empty_nat_id'];
 
     }
     if($branch_id == 0){
-        $arr_error['branch'] = "Branch Must Be not Empty";
+        $arr_error['branch'] = $student['empty_branch'];
     }
 
     if($speical_id == 0){
-        $arr_error['speical'] = "specialization Must Be not Empty";
+        $arr_error['speical'] = $student['empty_speical'];
     }
 
     if($level == 0){
-        $arr_error['level'] = "Level Must Be not Empty";
+        $arr_error['level'] = $student['empty_level'];
     }
+
+
 
     if(empty($arr_error)){
 
         if($numlength != 14){
-        $arr_error['nat_id'] = "National ID Must be 14 numbers";
+        $arr_error['nat_id'] = $student['not_14_nat_id'];
         $defalut = $_POST;
         }
         if(empty($arr_error)){
-            $stmt =$con->prepare("SELECT * From students Where national_id = ? AND id != ?");
-            $stmt->execute(array($nat_id,$_GET['id']));
-            $result = $stmt->rowCount();
+            $result = get_duplicate_national_id($nat_id,$_GET['id']);
             if($result){
-                $arr_error['error_in_add'] = "National Id is already Exist";
+                $arr_error['error_in_add'] = $student['dulicate_nat_id'];
                 $defalut = $_POST;
             }else{
-                $stmt = $con->prepare("UPDATE students SET national_id = ? , `name` = ?,branch_id = ? , speical_id  = ?, `level` = ? WHERE id = ?");
-                $stmt->execute(array($nat_id,$name,$branch_id,$speical_id,$level,$_GET['id']));
-                $result = $stmt->rowCount();
+                $result = update_student($nat_id,$name,$branch_id,$speical_id,$level,$_GET['id']);
                 if($result){
                     header("location:Evaluation.php");
                 }
@@ -69,15 +65,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
 
+    
+
 }
 
-$stmt = $con->prepare("SELECT * FROM branchs");
-$stmt->execute();
-$all_branches = $stmt->fetchAll();
-
-$stmt = $con->prepare("SELECT * FROM specializations");
-$stmt->execute();
-$all_specializations = $stmt->fetchAll();
+$all_branches = get_all_branch();
+$all_specializations = get_all_specializations();
 
 
 ?>

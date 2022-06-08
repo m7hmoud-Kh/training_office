@@ -1,44 +1,41 @@
 <?php
 
 require 'db.php';
+require './static_message.php';
+require './models/Model_student.php';
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $arr_error = array();
     $nat_id = $_POST['nat_id'];
 
     if(empty($nat_id)){
-        $arr_error['nat_id'] = "National ID Must be Added";
+        $arr_error['nat_id'] = $student['empty_nat_id'];
     }else{
         if(strlen($nat_id) != 14){
-        $arr_error['nat_id'] = "National ID Must be 14 Numbers";
+        $arr_error['nat_id'] = $student['not_14_nat_id'];
         }
     }
 
     if(empty($arr_error)){
-
-        $stmt = $con->prepare("SELECT * FROM students where national_id  = ?");
-        $stmt->execute(array($nat_id));
-        $found_or_not = $stmt->fetch();
+        $found_or_not = get_student_by_nat_id($nat_id);
         if($found_or_not){
-
-            $stmt = $con->prepare('SELECT * From  student_school  where student_id = ? ');
-            $stmt->execute(array($found_or_not['id']));
-            $result = $stmt->fetch();
+            $result = get_studnet_is_coordination_by_student_id($found_or_not['id']);
             if($result){
                 $id =  $result['id'];
                 header("location:poll.php?id=$id");
             }else{
-                $arr_error['not_checked'] = "Student don't Coordination yet..!";
+                $arr_error['not_checked'] = $student['not_Coordination'];
             }
         }else{
-            $arr_error['not_checked'] = "Maybe Incorrect National ID";
+            $arr_error['not_checked'] = $student['incorrect_nat_id'];
         }
     }
 
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">

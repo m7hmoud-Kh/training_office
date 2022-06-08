@@ -1,38 +1,34 @@
 <?php
-
-require 'db.php';
 require 'helper.php';
+require './models/Model_student.php';
+require './models/Model_branch.php';
+require './models/Model_specializations.php';
+require './models/Model_school.php';
+require './static_message.php';
+
+const TOTAL_STUDENT_SPECIAL = 8;
+
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
 
-
-    $stmt = $con->prepare("SELECT * FROM student_school where student_id = ?");
-    $stmt->execute(array($_GET['id']));
-    $check_entered = $stmt->rowCount();
+    $check_entered = get_studnet_is_coordination_by_student_id($_GET['id'],true);
     if(!$check_entered){
 
-    $stmt = $con->prepare("SELECT * FROM students where id = ?");
-    $stmt->execute(array($_GET['id']));
-    $result = $stmt->fetch();
+    $result = get_student_by_id($_GET['id']);
 
     $gender = get_gender($result['gender']);
 
-    $stmt = $con->prepare("SELECT * FROM branchs where id = ?");
-    $stmt->execute(array($result['branch_id']));
-    $branch = $stmt->fetch();
+
+    $branch = get_branch_by_id($result['branch_id']);
 
 
-    $stmt = $con->prepare("SELECT * FROM specializations where id = ?");
-    $stmt->execute(array($result['speical_id']));
-    $special = $stmt->fetch();
+    $special = get_specializations_by_id($result['speical_id']);
 
-    $stmt = $con->prepare("SELECT COUNT(special_id) as count_special , special_id ,school_id FROM student_school WHERE  branch_id = ? GROUP BY school_id");
-    $stmt->execute(array($branch['id']));
-    $check_group_in_school = $stmt->fetchAll();
+    $check_group_in_school = get_check_group_in_school($branch['id']);
 
     $blocked_school = array();
     foreach($check_group_in_school as $check_group){
-        if($check_group['count_special'] >= 8){
+        if($check_group['count_special'] >= TOTAL_STUDENT_SPECIAL){
             $blocked_school[] = $check_group['school_id'];
         }
 
@@ -42,40 +38,27 @@ if(isset($_GET['id']) && is_numeric($_GET['id'])){
         $ids = join("','",$blocked_school);
 
         if($special['name'] == 'أساسي'){
-            $stmt = $con->prepare("SELECT * FROM  schools  where speical_id = ? AND id not in (?) ");
-            $stmt->execute(array($result['speical_id'],$ids));
-            $schools = $stmt->fetchAll();
+            $schools = get_not_block_school($result['speical_id'],$ids);
             }else{
-            $stmt = $con->prepare("SELECT * FROM schools where speical_id = ? AND gender = ? AND id Not in (?)");
-            $stmt->execute(array($result['speical_id'],$result['gender'],$ids));
-            $schools = $stmt->fetchAll();
-
+            $schools = get_not_block_school_base_on_gander($result['speical_id'],$result['gender'],$ids);
         }
-
     }else{
 
         if($special['name'] == 'أساسي'){
-            $stmt = $con->prepare("SELECT * FROM  schools  where speical_id = ?");
-            $stmt->execute(array($result['speical_id']));
-            $schools = $stmt->fetchAll();
+            $schools = get_school_by_speical_id($result['speical_id']);
             }else{
-            $stmt = $con->prepare("SELECT * FROM schools where speical_id = ? AND gender = ? ");
-            $stmt->execute(array($result['speical_id'],$result['gender']));
-            $schools = $stmt->fetchAll();
+            $schools = get_school_by_speical_id_and_gender($result['speical_id'],$result['gender']);
             }
-
-
     }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $school_id =  filter_var($_POST['school_id'],FILTER_VALIDATE_INT);
 
-        $stmt = $con->prepare("INSERT INTO student_school (`student_id`, `school_id`, `special_id`, `branch_id`) VALUES (? , ? , ?,?)");
-        $stmt->execute(array($result['id'],$school_id,$special['id'],$branch['id']));
-        $student_school = $stmt->rowCount();
+        $student_school = add_student_to_school($result['id'],$school_id,$special['id'],$branch['id']);
+
         if($student_school){
-            $success = "You Are Selected School Successfully";
+            $success = $student['success_selected_school'];
             header('Refresh: 3; URL=coordination.php');
         }
 

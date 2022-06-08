@@ -1,39 +1,20 @@
 <?php
 require 'db.php';
 require 'helper.php';
+require './models/Model_student.php';
+require './models/Model_school.php';
+require './models/Model_branch.php';
+require './models/Model_specializations.php';
+
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
 
-$stmt = $con->prepare("SELECT * FROM student_school where id = ?");
-$stmt->execute(array($_GET['id']));
-$result = $stmt->fetch();
-
-
-$stmt = $con->prepare("SELECT * FROM students where id = ?");
-$stmt->execute(array($result['student_id']));
-$student = $stmt->fetch();
-
-$stmt = $con->prepare("SELECT `name` FROM branchs where id = ?");
-$stmt->execute(array($result['branch_id']));
-$branch = $stmt->fetch();
-
-
-$stmt = $con->prepare("SELECT `name` FROM specializations where id = ?");
-$stmt->execute(array($result['special_id']));
-$special = $stmt->fetch();
-
-$stmt = $con->prepare("SELECT `name` FROM schools  where id = ?");
-$stmt->execute(array($result['school_id']));
-$school = $stmt->fetch();
-
-
-
+$result = get_student_is_coordination($_GET['id']);
+$student = get_student_by_id($result['student_id']);
+$branch = get_branch_by_id($result['branch_id'],'name');
+$special = get_specializations_by_id($result['special_id'],'name');
+$school = get_school_by_id($result['school_id'],'name');
 $gender = get_gender($student['gender']);
-
-
-
-
-
 
 }
 

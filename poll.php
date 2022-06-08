@@ -2,16 +2,18 @@
 
 require 'db.php';
 require 'helper.php';
+require './models/Model_student.php';
+require './models/Model_poll.php';
+require './static_message.php';
+
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
-    $stmt = $con->prepare("SELECT * FROM student_school  where id  = ?");
-    $stmt->execute(array($_GET['id']));
-    $student = $stmt->fetch();
 
 
-    $stmt = $con->prepare("SELECT * FROM  polls where student_id   = ?");
-    $stmt->execute(array($student['student_id']));
-    $is_poll = $stmt->rowCount();
+    $student = get_student_is_coordination($_GET['id']);
+
+    $is_poll = is_poll_student_or_not($student['student_id']);
+
 if(!$is_poll){
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -36,7 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $added_section_3 = insert_poll_one_section($section_3,$student['student_id'],$student['school_id'],3);
 
     if($added_section_1 && $added_section_2 && $added_section_3){
-        $success_poll = 'You Are Maked Poll Successfully';
+        $success_poll = $poll['success_poll'];
         header('Refresh: 3; URL=home.php');
     }
 
@@ -45,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">

@@ -21,15 +21,6 @@ function get_gender($gender){
     }
 }
 
-function insert_poll_one_section($section,$std_id,$school_id,$section_id){
-
-    global $con;
-    foreach($section as $key => $val){
-        $stmt = $con->prepare("INSERT INTO polls (`student_id`,school_id,section_id,answer) VALUES(?,?,?,?)");
-        $stmt->execute(array($std_id,$school_id,$section_id,$val));
-    }
-    return True;
-}
 
 
 function get_all_answer_per_section($section_id,$school_id){
