@@ -2,9 +2,9 @@
 
 require 'db.php';
 
-function get_school_by_id($id,$select='*'){
+function get_school_by_id($id){
     global $con;
-    $stmt = $con->prepare("SELECT `$select` FROM schools where id = ?");
+    $stmt = $con->prepare("SELECT * FROM schools where id = ?");
     $stmt->execute(array($id));
     return $stmt->fetch();
 }

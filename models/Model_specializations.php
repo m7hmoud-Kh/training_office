@@ -9,9 +9,9 @@ function get_all_specializations(){
     return $stmt->fetchAll();
 }
 
-function get_specializations_by_id($id,$select='*'){
+function get_specializations_by_id($id){
     global $con;
-    $stmt = $con->prepare("SELECT `$select` FROM specializations where id = ?");
+    $stmt = $con->prepare("SELECT * FROM specializations where id = ?");
     $stmt->execute(array($id));
     return $stmt->fetch();
 }
